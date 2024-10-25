@@ -11,9 +11,10 @@
         public TenantId? TenantId { get; set; }
         public Tenant? Tenant { get; set; }
 
-        public ContentEventTypeId? ContentEventTypeId { get; set; }
-        public ContentEventType? ContentEventType { get; set; }
-
+        public ContentEventTypeId? TypeId { get; set; }
+        public ContentEventType? Type { get; set; }
+        public ContentEventSubTypeId? SubTypeId { get; set; }
+        public ContentEventSubType? SubType { get; set; }
         public ulong? CreatedByDiscordId { get; set; }
         public ulong? ModifiedByByDiscordId { get; set; }
         public AlbionMapId? AlbionMapId { get; set; }
