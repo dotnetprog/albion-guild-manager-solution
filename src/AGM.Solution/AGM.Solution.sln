@@ -5,6 +5,21 @@ VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGM.Domain", "AGM.Domain\AGM.Domain.csproj", "{13EE7A7A-CF82-4D11-803A-816F4573ED80}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{C9FD7C51-DA6C-471D-B012-75782A32D7D2}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\data\ContentSubType.txt = ..\..\data\ContentSubType.txt
+		..\..\data\ContentType.txt = ..\..\data\ContentType.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maps", "Maps", "{61A6BC0B-8D2E-4811-A813-D2E274C09239}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\data\Maps\AvalonRoads.txt = ..\..\data\Maps\AvalonRoads.txt
+		..\..\data\Maps\Blackzones.txt = ..\..\data\Maps\Blackzones.txt
+		..\..\data\Maps\Bluezones.txt = ..\..\data\Maps\Bluezones.txt
+		..\..\data\Maps\Redzones.txt = ..\..\data\Maps\Redzones.txt
+		..\..\data\Maps\Yellowzones.txt = ..\..\data\Maps\Yellowzones.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +33,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{61A6BC0B-8D2E-4811-A813-D2E274C09239} = {C9FD7C51-DA6C-471D-B012-75782A32D7D2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E7457160-BAF1-4579-B9DB-3260DF667640}

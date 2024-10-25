@@ -2,7 +2,10 @@
 {
     public enum AlbionMapType
     {
-        Regular = 0,
-        Road = 1
+        Blackzone = 0,
+        Road = 1,
+        RedZone = 2,
+        YellowZone = 3,
+        Bluezone = 4,
     }
 }
