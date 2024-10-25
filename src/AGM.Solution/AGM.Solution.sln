@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maps", "Maps", "{61A6BC0B-8
 		..\..\data\Maps\Yellowzones.txt = ..\..\data\Maps\Yellowzones.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGM.Application", "AGM.Application\AGM.Application.csproj", "{E823AEA9-6C1A-4F26-A241-E2FB3ABA04DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{13EE7A7A-CF82-4D11-803A-816F4573ED80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13EE7A7A-CF82-4D11-803A-816F4573ED80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13EE7A7A-CF82-4D11-803A-816F4573ED80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E823AEA9-6C1A-4F26-A241-E2FB3ABA04DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E823AEA9-6C1A-4F26-A241-E2FB3ABA04DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E823AEA9-6C1A-4F26-A241-E2FB3ABA04DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E823AEA9-6C1A-4F26-A241-E2FB3ABA04DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
