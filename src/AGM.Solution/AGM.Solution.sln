@@ -5,6 +5,15 @@ VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGM.Domain", "AGM.Domain\AGM.Domain.csproj", "{13EE7A7A-CF82-4D11-803A-816F4573ED80}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{C9FD7C51-DA6C-471D-B012-75782A32D7D2}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\data\AvalonRoads.txt = ..\..\data\AvalonRoads.txt
+		..\..\data\Blackzones.txt = ..\..\data\Blackzones.txt
+		..\..\data\Bluezones.txt = ..\..\data\Bluezones.txt
+		..\..\data\Redzones.txt = ..\..\data\Redzones.txt
+		..\..\data\Yellowzones.txt = ..\..\data\Yellowzones.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
