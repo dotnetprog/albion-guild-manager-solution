@@ -3,7 +3,7 @@ using AGM.Domain.Enums;
 
 namespace AGM.Domain.Abstractions
 {
-    public interface AlbionMapRepository
+    public interface IAlbionMapRepository
     {
         public Task<AlbionMap> GetByName(string name);
         public Task<AlbionMap> GetById(AlbionMapId Id);

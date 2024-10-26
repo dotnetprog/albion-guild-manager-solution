@@ -8,5 +8,6 @@
     {
         public ContentEventTypeId Id { get; set; }
         public string? Name { get; set; }
+        public ICollection<ContentEventSubType> SubTypes { get; set; } = new List<ContentEventSubType>();
     }
 }
