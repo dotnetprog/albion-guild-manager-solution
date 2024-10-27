@@ -2,6 +2,8 @@ using AGM.Application;
 using AGM.Database;
 using AGM.DiscordBot;
 using AGM.DiscordBot.Configuration;
+using AGM.DiscordBot.Factory;
+using AGM.DiscordBot.Interactions;
 using AGM.DiscordBot.Processing;
 using AGM.Domain.Abstractions;
 using AGM.Domain.Identity;
@@ -35,10 +37,13 @@ builder.Services
         var client = sp.GetRequiredService<DiscordSocketClient>();
         return new InteractionService(client, new InteractionServiceConfig()
         {
-            LogLevel = LogSeverity.Info
+            LogLevel = LogSeverity.Info,
+            AutoServiceScopes = false
         });
     })
     .AddScoped<IDiscordIdentityManager, SocketDiscordIdentityManager>()
-    .AddScoped<IScopedDiscordProcessingService, AGMDiscordBotProcessingService>();
+    .AddScoped<IScopedDiscordProcessingService, AGMDiscordBotProcessingService>()
+    .AddSingleton<IScopedDiscordFactory, WorkerScopedDiscordFactory>()
+    .AddSingleton<InteractionRegisteringService, DiscordInterfactionRegisteringService>();
 var host = builder.Build();
 host.Run();

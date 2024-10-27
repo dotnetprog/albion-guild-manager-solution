@@ -12,7 +12,14 @@ namespace AGM.DiscordBot
 
         public Task<User> GetCurrentUser()
         {
-            throw new NotImplementedException();
+
+            var user = new User
+            {
+                AvatarUrl = User.GetAvatarUrl(),
+                DiscordUserId = User.Id,
+                Displayname = User.Nickname ?? User.DisplayName
+            };
+            return Task.FromResult(user);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AGM.Application.Features.Configuration.Commands;
 using AGM.Domain.Abstractions;
+using Discord;
 using Discord.WebSocket;
 using MediatR;
 
@@ -30,6 +31,19 @@ namespace AGM.DiscordBot.Processing
                 Name = socketGuild.Name
             });
             _tenantProvider.SetActiveTenant(tenant);
+        }
+
+        public async Task UpdateContentEventSettingsInteraction(IChannel TimerChannel)
+        {
+            var currentTenant = _tenantProvider.GetCurrentTenant();
+            if (currentTenant.ChannelEventDiscordId == TimerChannel.Id)
+            {
+                return;
+            }
+            await _sender.Send(new UpdateContentEventSettingsCommand
+            {
+                ChannelEventDiscordId = TimerChannel.Id
+            });
         }
     }
 }

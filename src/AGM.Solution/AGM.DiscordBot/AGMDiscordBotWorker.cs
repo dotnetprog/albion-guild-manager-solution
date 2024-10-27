@@ -1,7 +1,7 @@
 using AGM.DiscordBot.Configuration;
+using AGM.DiscordBot.Factory;
+using AGM.DiscordBot.Interactions;
 using AGM.DiscordBot.Processing;
-using AGM.Domain.Abstractions;
-using AGM.Domain.Entities;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Options;
@@ -11,51 +11,54 @@ namespace AGM.DiscordBot
     public class AGMDiscordBotWorker : BackgroundService
     {
         private readonly ILogger<AGMDiscordBotWorker> _logger;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IScopedDiscordFactory _scopedDiscordFactory;
         private readonly DiscordSocketClient _discordClient;
         private readonly DiscordSettings _discordSettings;
-
+        private readonly InteractionRegisteringService _interactionRegisteringService;
         public AGMDiscordBotWorker(ILogger<AGMDiscordBotWorker> logger,
             DiscordSocketClient discordClient,
-            IServiceScopeFactory serviceScopeFactory,
-            IOptions<DiscordSettings> discordOptions)
+            IScopedDiscordFactory scopedDiscordFactory,
+            IOptions<DiscordSettings> discordOptions,
+            InteractionRegisteringService interactionRegisteringService)
         {
             _logger = logger;
             _discordClient = discordClient;
-            _serviceScopeFactory = serviceScopeFactory;
+            _scopedDiscordFactory = scopedDiscordFactory;
             _discordSettings = discordOptions.Value;
+            _interactionRegisteringService = interactionRegisteringService;
         }
-        private IServiceScope CreateScope(IGuild guild, IGuildUser User = null)
+        private async Task<IServiceScope> CreateScopeAsync(IGuild guild, IGuildUser User = null)
         {
-            var Guild = new Tenant
-            {
-                DiscordServerId = guild.Id,
-                Name = guild.Name
-            };
-
-            var scope = _serviceScopeFactory.CreateScope();
-            var tenantProvider = scope.ServiceProvider.GetService<ITenantProvider>();
-            tenantProvider.SetActiveTenant(Guild);
-            var IdentityManager = scope.ServiceProvider.GetService<IDiscordIdentityManager>() as SocketDiscordIdentityManager;
-            IdentityManager.SetUser(User);
-            return scope;
-
+            return await _scopedDiscordFactory.Create(guild, User);
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _discordClient.Ready += async () =>
             {
-                _logger.LogInformation($"Bot is connected and ready!");
+                try
+                {
+                    _logger.LogInformation($"Bot is connected and ready!");
+                    await _interactionRegisteringService.InitializeAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, ex.Message);
+                }
+
             };
             _discordClient.JoinedGuild += async (SocketGuild) =>
             {
-                using (var scope = CreateScope(SocketGuild))
+                using (var scope = await CreateScopeAsync(SocketGuild))
                 {
                     var service = scope.ServiceProvider.GetRequiredService<IScopedDiscordProcessingService>();
                     await service.OnGuildJoin(SocketGuild);
                 }
             };
+            _discordClient.Log += async (msg) =>
+            {
 
+                await Task.Run(() => _logger.LogDebug(msg.ToString()));
+            };
             await _discordClient.LoginAsync(TokenType.Bot, _discordSettings.Token, true);
             await _discordClient.StartAsync();
 
