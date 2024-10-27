@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-AGM.DiscordBot-7f24f0fd-dcad-493a-8215-ba9a9a9125cd</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Discord.Net" Version="3.16.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AGM.Application\AGM.Application.csproj" />
+    <ProjectReference Include="..\AGM.Database\AGM.Database.csproj" />
+    <ProjectReference Include="..\AGM.Domain\AGM.Domain.csproj" />
+    <ProjectReference Include="..\AGM.EntityFramework\AGM.EntityFramework.csproj" />
+  </ItemGroup>
+</Project>

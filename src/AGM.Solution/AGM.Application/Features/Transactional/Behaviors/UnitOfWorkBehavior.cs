@@ -1,6 +1,5 @@
 ﻿using AGM.Domain.Abstractions;
 using MediatR;
-using System.Transactions;
 
 namespace AGM.Application.Features.Transactional.Behaviors
 {
@@ -17,10 +16,9 @@ namespace AGM.Application.Features.Transactional.Behaviors
             {
                 return await next();
             }
-            using var scope = new TransactionScope(TransactionScopeOption.Required, TransactionScopeAsyncFlowOption.Enabled);
+
             var result = await next();
             await _unitOfWork.SaveChanchesAsync(cancellationToken);
-            scope.Complete();
             return result;
         }
     }

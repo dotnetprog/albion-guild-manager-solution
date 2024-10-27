@@ -12,11 +12,13 @@ namespace AGM.Application
         {
             service.AddMediatR(cfg =>
             {
+                cfg.Lifetime = ServiceLifetime.Scoped;
                 cfg.RegisterServicesFromAssemblies(AssemblyReference.Assembly);
             })
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>))
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>))
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>))
+            .AddMemoryCache();
             return service;
         }
     }
