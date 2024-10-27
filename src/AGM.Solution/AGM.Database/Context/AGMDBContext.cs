@@ -22,7 +22,7 @@ namespace AGM.Database.Context
         {
             var tenant = _tenantProvider.GetCurrentTenant();
             modelBuilder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
-            modelBuilder.Entity<ContentEvent>().HasQueryFilter(x => x.TenantId == tenant.Id);
+            modelBuilder.Entity<ContentEvent>().HasQueryFilter(x => x.Tenant.DiscordServerId == tenant.DiscordServerId);
         }
     }
 }
