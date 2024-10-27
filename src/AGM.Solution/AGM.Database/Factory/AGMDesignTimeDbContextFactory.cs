@@ -1,4 +1,7 @@
 ﻿using AGM.Database.Context;
+using AGM.Domain.Abstractions;
+using AGM.Domain.Entities;
+using AGM.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -8,8 +11,14 @@ namespace AGM.Database.Factory
     public class AGMDesignTimeDbContextFactory : IDesignTimeDbContextFactory<AGMDBContext>
     {
         private const string ASPCORE_ENV_NAME = "ASPNETCORE_ENVIRONMENT";
+        private readonly ITenantProvider _tenantProvider = new MemoryTenantProvider();
         public AGMDBContext CreateDbContext(string[] args)
         {
+            _tenantProvider.SetActiveTenant(new Tenant
+            {
+                Id = TenantId.Empty
+            });
+
             Console.WriteLine("Inputs:");
             Console.WriteLine(string.Join("|", args));
             var environment = Environment.GetEnvironmentVariable(ASPCORE_ENV_NAME);
@@ -47,7 +56,7 @@ namespace AGM.Database.Factory
             {
                 var optionsBuilder = new DbContextOptionsBuilder<AGMDBContext>();
                 optionsBuilder.UseSqlServer(connstr);
-                return new AGMDBContext(optionsBuilder.Options);
+                return new AGMDBContext(optionsBuilder.Options, _tenantProvider);
             }
         }
     }
