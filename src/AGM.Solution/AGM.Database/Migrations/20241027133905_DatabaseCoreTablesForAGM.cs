@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AGM.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTenantAndContentEventTableWithMaptable : Migration
+    public partial class DatabaseCoreTablesForAGM : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,7 +57,7 @@ namespace AGM.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ContentContentEventSubTypes",
+                name: "ContentEventSubTypes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -67,10 +67,10 @@ namespace AGM.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContentContentEventSubTypes", x => x.Id)
+                    table.PrimaryKey("PK_ContentEventSubTypes", x => x.Id)
                         .Annotation("SqlServer:Clustered", false);
                     table.ForeignKey(
-                        name: "FK_ContentContentEventSubTypes_ContentEventTypes_ContentEventTypeId",
+                        name: "FK_ContentEventSubTypes_ContentEventTypes_ContentEventTypeId",
                         column: x => x.ContentEventTypeId,
                         principalTable: "ContentEventTypes",
                         principalColumn: "Id",
@@ -97,9 +97,9 @@ namespace AGM.Database.Migrations
                     table.PrimaryKey("PK_ContentEvents", x => x.Id)
                         .Annotation("SqlServer:Clustered", false);
                     table.ForeignKey(
-                        name: "FK_ContentEvents_ContentContentEventSubTypes_SubTypeId",
+                        name: "FK_ContentEvents_ContentEventSubTypes_SubTypeId",
                         column: x => x.SubTypeId,
-                        principalTable: "ContentContentEventSubTypes",
+                        principalTable: "ContentEventSubTypes",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ContentEvents_ContentEventTypes_TypeId",
@@ -117,11 +117,6 @@ namespace AGM.Database.Migrations
                         principalTable: "Tenants",
                         principalColumn: "Id");
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ContentContentEventSubTypes_ContentEventTypeId",
-                table: "ContentContentEventSubTypes",
-                column: "ContentEventTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContentEvents_AlbionMapId",
@@ -142,6 +137,11 @@ namespace AGM.Database.Migrations
                 name: "IX_ContentEvents_TypeId",
                 table: "ContentEvents",
                 column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ContentEventSubTypes_ContentEventTypeId",
+                table: "ContentEventSubTypes",
+                column: "ContentEventTypeId");
         }
 
         /// <inheritdoc />
@@ -151,7 +151,7 @@ namespace AGM.Database.Migrations
                 name: "ContentEvents");
 
             migrationBuilder.DropTable(
-                name: "ContentContentEventSubTypes");
+                name: "ContentEventSubTypes");
 
             migrationBuilder.DropTable(
                 name: "Maps");

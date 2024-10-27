@@ -1,0 +1,2 @@
+SPIDER,<:crystal_spider:1300141752862380074>
+COBRA,<:crystal_cobra:1300141990758977667>

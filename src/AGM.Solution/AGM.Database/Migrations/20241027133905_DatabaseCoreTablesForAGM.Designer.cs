@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AGM.Database.Migrations
 {
     [DbContext(typeof(AGMDBContext))]
-    [Migration("20241026195605_AddTenantAndContentEventTableWithMaptable")]
-    partial class AddTenantAndContentEventTableWithMaptable
+    [Migration("20241027133905_DatabaseCoreTablesForAGM")]
+    partial class DatabaseCoreTablesForAGM
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,7 +110,7 @@ namespace AGM.Database.Migrations
 
                     b.HasIndex("ContentEventTypeId");
 
-                    b.ToTable("ContentContentEventSubTypes");
+                    b.ToTable("ContentEventSubTypes");
                 });
 
             modelBuilder.Entity("AGM.Domain.Entities.ContentEventType", b =>
