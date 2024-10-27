@@ -19,7 +19,9 @@ namespace AGM.Application.Features.Configuration.Commands
 
         public async Task<Tenant> Handle(UpdateContentEventSettingsCommand request, CancellationToken cancellationToken)
         {
-            var currentTenant = _tenantProvider.GetCurrentTenant();
+            var contextTenant = _tenantProvider.GetCurrentTenant();
+
+            var currentTenant = await _tenantRepository.GetByDiscordId(contextTenant.DiscordServerId);
             currentTenant.ChannelEventDiscordId = request.ChannelEventDiscordId;
             currentTenant.EventMessageDiscordId = request.EventMessageDiscordId;
 
