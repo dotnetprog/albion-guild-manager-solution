@@ -7,5 +7,6 @@
         RedZone = 2,
         YellowZone = 3,
         Bluezone = 4,
+        City = 5
     }
 }

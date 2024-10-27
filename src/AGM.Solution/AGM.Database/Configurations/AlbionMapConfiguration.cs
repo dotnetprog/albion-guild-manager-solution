@@ -16,6 +16,9 @@ namespace AGM.Database.Configurations
             builder.HasKey(x => x.Id).HasAnnotation("SqlServer:Clustered", false);
             builder.Property(x => x.Id).HasConversion(converter);
             builder.Property(x => x.Type).HasConversion<string>();
+
+
+
         }
     }
 }

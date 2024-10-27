@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="EFScripts\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

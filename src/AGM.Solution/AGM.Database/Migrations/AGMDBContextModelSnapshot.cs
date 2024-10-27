@@ -107,7 +107,7 @@ namespace AGM.Database.Migrations
 
                     b.HasIndex("ContentEventTypeId");
 
-                    b.ToTable("ContentContentEventSubTypes");
+                    b.ToTable("ContentEventSubTypes");
                 });
 
             modelBuilder.Entity("AGM.Domain.Entities.ContentEventType", b =>

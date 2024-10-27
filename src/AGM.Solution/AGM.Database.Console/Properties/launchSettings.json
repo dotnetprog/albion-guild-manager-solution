@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AGM.Database.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "seed",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

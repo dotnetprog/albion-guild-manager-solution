@@ -24,6 +24,5 @@ namespace AGM.Database.Context
             modelBuilder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
             modelBuilder.Entity<ContentEvent>().HasQueryFilter(x => x.TenantId == tenant.Id);
         }
-
     }
 }
