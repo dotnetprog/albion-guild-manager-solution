@@ -7,7 +7,12 @@ namespace AGM.Database.Configurations
 {
     public class ContentEventConfiguration : IEntityTypeConfiguration<ContentEvent>
     {
-        public void Configure(EntityTypeBuilder<ContentEvent> builder)
+
+
+        public ContentEventConfiguration()
+        {
+        }
+        public async void Configure(EntityTypeBuilder<ContentEvent> builder)
         {
             var converter = new ValueConverter<ContentEventId, Guid>(
                                          id => id.Value,

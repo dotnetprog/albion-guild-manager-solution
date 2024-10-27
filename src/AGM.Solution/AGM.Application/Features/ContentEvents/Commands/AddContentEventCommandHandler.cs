@@ -23,7 +23,7 @@ namespace AGM.Application.Features.ContentEvents.Commands
         public async Task<ContentEvent> Handle(AddContentEventCommand request, CancellationToken cancellationToken)
         {
             var currentUser = await _discordIdentityManager.GetCurrentUser();
-            var tenant = await _tenantProvider.GetCurrentTenant();
+            var tenant = _tenantProvider.GetCurrentTenant();
             var contentEvent = new ContentEvent
             {
                 AlbionMapId = request.AlbionMapId,

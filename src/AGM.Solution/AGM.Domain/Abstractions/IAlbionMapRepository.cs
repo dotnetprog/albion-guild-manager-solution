@@ -7,7 +7,7 @@ namespace AGM.Domain.Abstractions
     {
         public Task<AlbionMap> GetByName(string name);
         public Task<AlbionMap> GetById(AlbionMapId Id);
-        public Task<IEnumerable<AlbionMap>> GetAllByType(AlbionMapType type);
+        public Task<IEnumerable<AlbionMap>> GetAllByTypes(params AlbionMapType[] types);
         public Task<IEnumerable<AlbionMap>> GetAll();
     }
 }

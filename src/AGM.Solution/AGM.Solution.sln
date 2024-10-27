@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGM.Domain", "AGM.Domain\AGM.Domain.csproj", "{13EE7A7A-CF82-4D11-803A-816F4573ED80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AGM.Domain", "AGM.Domain\AGM.Domain.csproj", "{13EE7A7A-CF82-4D11-803A-816F4573ED80}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "references", "references", "{C9FD7C51-DA6C-471D-B012-75782A32D7D2}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maps", "Maps", "{61A6BC0B-8
 		..\..\data\Maps\Yellowzones.txt = ..\..\data\Maps\Yellowzones.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGM.Application", "AGM.Application\AGM.Application.csproj", "{E823AEA9-6C1A-4F26-A241-E2FB3ABA04DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AGM.Application", "AGM.Application\AGM.Application.csproj", "{E823AEA9-6C1A-4F26-A241-E2FB3ABA04DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{1A47C692-D5E2-4779-9391-8AC5F1DAEA34}"
 EndProject
@@ -28,7 +28,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{41C52970-C815-4E85-9EF6-B02DAB8978FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGM.Database", "AGM.Database\AGM.Database.csproj", "{11580FA0-012E-404A-AA70-161B4F9E6591}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AGM.Database", "AGM.Database\AGM.Database.csproj", "{11580FA0-012E-404A-AA70-161B4F9E6591}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGM.EntityFramework", "AGM.EntityFramework\AGM.EntityFramework.csproj", "{0C8D2816-8F22-4E56-AA5E-577714A9BB13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D0CC9DC1-F62D-430E-8196-1686696CAF39}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +55,10 @@ Global
 		{11580FA0-012E-404A-AA70-161B4F9E6591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11580FA0-012E-404A-AA70-161B4F9E6591}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11580FA0-012E-404A-AA70-161B4F9E6591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C8D2816-8F22-4E56-AA5E-577714A9BB13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C8D2816-8F22-4E56-AA5E-577714A9BB13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C8D2816-8F22-4E56-AA5E-577714A9BB13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C8D2816-8F22-4E56-AA5E-577714A9BB13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +68,7 @@ Global
 		{61A6BC0B-8D2E-4811-A813-D2E274C09239} = {C9FD7C51-DA6C-471D-B012-75782A32D7D2}
 		{E823AEA9-6C1A-4F26-A241-E2FB3ABA04DD} = {A8269999-1C66-42BA-8F94-8A5702AA8684}
 		{11580FA0-012E-404A-AA70-161B4F9E6591} = {41C52970-C815-4E85-9EF6-B02DAB8978FD}
+		{0C8D2816-8F22-4E56-AA5E-577714A9BB13} = {41C52970-C815-4E85-9EF6-B02DAB8978FD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E7457160-BAF1-4579-B9DB-3260DF667640}

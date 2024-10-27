@@ -4,6 +4,7 @@ namespace AGM.Domain.Abstractions
 {
     public interface ITenantProvider
     {
-        Task<Tenant> GetCurrentTenant();
+        Tenant GetCurrentTenant();
+        void SetActiveTenant(Tenant tenant);
     }
 }
