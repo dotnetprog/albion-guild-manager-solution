@@ -39,10 +39,6 @@ builder.Services
         });
     })
     .AddScoped<IDiscordIdentityManager, SocketDiscordIdentityManager>()
-    .AddScoped<IScopedDiscordProcessingService, AGMDiscordBotProcessingService>()
-    .AddLogging((builder) =>
-            builder
-            .AddFilter("Microsoft.EntityFrameworkCore.Database", LogLevel.Error)
-            .AddConsole()); ;
+    .AddScoped<IScopedDiscordProcessingService, AGMDiscordBotProcessingService>();
 var host = builder.Build();
 host.Run();
