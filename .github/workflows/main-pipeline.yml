@@ -48,6 +48,7 @@ jobs:
 
   deployProduction:
    name: 'Production'
+   if: ${{  contains(github.ref, 'release') && github.event_name != 'pull_request' }}
    needs: build
    uses: ./.github/workflows/cd-pipeline.yml
    with:
