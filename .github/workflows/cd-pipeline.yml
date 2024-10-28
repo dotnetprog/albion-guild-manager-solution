@@ -94,7 +94,7 @@ jobs:
             registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
             registry-username: ${{ secrets.REGISTRY_USERNAME }}
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-            name: agmbot${{ inputs.environment }}
+            name: aci-agmbot${{ inputs.environment }}
             location: 'east us'
         - name: Update database
           run: |
