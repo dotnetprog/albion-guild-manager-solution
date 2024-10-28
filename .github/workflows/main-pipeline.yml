@@ -1,0 +1,77 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: 'Main Workflow'
+run-name: ${{ github.event.repository.name }}_${{ github.run_number }}
+permissions:
+  contents: read
+  issues: read
+  checks: write
+  pull-requests: write
+on:
+  push:
+    branches: [ "main","release/*" ]
+  pull_request:
+    branches: [ "main","release/*" ]
+  workflow_dispatch:
+
+env:
+  solutionPath: '${{ github.workspace }}/src/AGM.Solution.sln'
+  solutionFolder: '${{ github.workspace }}/src'
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
+      with:
+       versionSpec: '5.x'
+    - name: Determine Version
+      uses: gittools/actions/gitversion/execute@v0
+      with:
+        useConfigFile: true
+        configFilePath: ./.github/GitVersion.yml
+
+    - name: Restore dependencies
+      run: dotnet restore ${{  env.solutionPath  }}
+    - name: Build
+      run: dotnet build ${{  env.solutionPath  }} --configuration Release --no-restore
+
+  deployProduction:
+   name: 'Production'
+   if: ${{  contains(github.ref, 'release') && github.event_name != 'pull_request' }}
+   needs: build
+   uses: ./.github/workflows/cd-pipeline.yml
+   with:
+     environment: 'Production'
+     solutionPath: 'src/AGM.Solution.sln'
+     solutionFolder: 'src'
+   secrets:
+     DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
+     DATABASE_USER: ${{ secrets.DATABASE_USERNAME }}
+     DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+     DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+     DISCORD_CLIENTID: ${{ secrets.DISCORD_CLIENTID }}
+     DISCORD_BOTTOKEN: ${{ secrets.DAM_DISCORD_BOTTOKEN }}
+     REGISTRY_LOGIN_SERVER: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+     REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+     REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+     AZURE_RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP}} 
+     AZURE_SERVICE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }} 
+   
+ 
+
+
+      
+  
+    
+  

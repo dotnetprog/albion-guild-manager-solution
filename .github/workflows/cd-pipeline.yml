@@ -1,0 +1,109 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: deploy workflow
+on:
+   workflow_call:
+    inputs:
+      solutionPath:
+        required: true
+        type: string
+      solutionFolder:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+    secrets:
+      DISCORD_CLIENTID:
+       required: true
+      DATABASE_PASSWORD:
+       required: true
+      DATABASE_HOSTNAME:
+       required: true
+      DATABASE_USER:
+       required: true
+      DATABASE_NAME:
+       required: true
+      DISCORD_BOTTOKEN:
+        required: true
+      REGISTRY_LOGIN_SERVER:
+        required: true
+      REGISTRY_USERNAME:
+        required: true
+      REGISTRY_PASSWORD:
+        required: true
+      AZURE_RESOURCE_GROUP:
+        required: true
+      AZURE_SERVICE_CREDENTIALS:
+        required: true
+      
+jobs:
+  Deployment:
+    name: Deployment
+    runs-on: ubuntu-latest
+    environment:
+        name: ${{ inputs.environment }}
+   
+    steps:
+        - uses: actions/checkout@v3
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: 8.0.x
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_SERVICE_CREDENTIALS }}
+        - name: Restore dependencies
+          run: dotnet restore ${{ github.workspace }}/${{  inputs.solutionPath  }}
+        - name: Build
+          run: dotnet build ${{ github.workspace }}/${{  inputs.solutionPath  }} --configuration Release --no-restore
+
+        - name: Replace tokens
+          uses: cschleiden/replace-tokens@v1
+          with:
+            tokenPrefix: '${'
+            tokenSuffix: '}$'
+            files: '["**/*.json"]'
+          env:
+            database_hostname: ${{ secrets.DATABASE_HOSTNAME }}
+            database_username: ${{ secrets.DATABASE_USER  }}
+            database_name: ${{ secrets.DATABASE_NAME }}
+            DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+            DAM_DISCORD_CLIENTID: ${{ secrets.DISCORD_CLIENTID }}
+            DAM_DISCORD_BOTTOKEN: ${{ secrets.DISCORD_BOTTOKEN }}
+
+        - name: 'Connect to Azure container registry'
+          uses: azure/docker-login@v1
+          with:
+            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            username: ${{ secrets.REGISTRY_USERNAME }}
+            password: ${{ secrets.REGISTRY_PASSWORD }}
+        - name: 'Build and Push Image' 
+          run: |
+            cd ${{ github.workspace }}/${{ inputs.solutionFolder }}
+            docker build -f 'AGM.DiscordBot/Dockerfile' -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/agmbot:${{ github.sha }} .
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/agmbot:${{ github.sha }}
+        - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
+            dns-name-label: ${{ secrets.AZURE_RESOURCE_GROUP }}${{ github.run_number }}
+            image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/agmbot:${{ github.sha }}
+            registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            registry-username: ${{ secrets.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+            name: aci-dambot${{ inputs.environment }}
+            location: 'east us'
+        - name: Update database
+          run: |
+            cd ${{ github.workspace }}/${{ inputs.solutionFolder }}/AGM.Database
+            dotnet tool install --global dotnet-ef --version 8.0.*
+            dotnet ef database update --no-build --configuration Release -- --environment Production
+          env:
+            DOTNET_ENVIRONMENT: Production
+
+  
+    
+  
