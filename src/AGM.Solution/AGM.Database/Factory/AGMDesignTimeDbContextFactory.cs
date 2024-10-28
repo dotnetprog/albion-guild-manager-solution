@@ -56,7 +56,7 @@ namespace AGM.Database.Factory
             {
                 var optionsBuilder = new DbContextOptionsBuilder<AGMDBContext>();
                 optionsBuilder.UseSqlServer(connstr);
-                return new AGMDBContext(optionsBuilder.Options, _tenantProvider);
+                return new AGMDBContext(optionsBuilder.Options);
             }
         }
     }
