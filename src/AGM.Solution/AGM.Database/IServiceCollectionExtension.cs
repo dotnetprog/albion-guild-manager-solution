@@ -17,7 +17,7 @@ namespace AGM.Database
                     .UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                          (so) => so.EnableRetryOnFailure(3, TimeSpan.FromSeconds(2), null));
 
-                });
+                }, ServiceLifetime.Scoped, ServiceLifetime.Scoped);
             return services;
         }
     }

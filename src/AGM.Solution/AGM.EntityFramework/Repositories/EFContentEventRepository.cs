@@ -8,10 +8,12 @@ namespace AGM.EntityFramework.Repositories
     public class EFContentEventRepository : IContentEventRepository
     {
         private readonly AGMDBContext _AgmContext;
+        private readonly ITenantProvider _tenantProvider;
 
-        public EFContentEventRepository(AGMDBContext agmContext)
+        public EFContentEventRepository(AGMDBContext agmContext, ITenantProvider tenantProvider)
         {
             _AgmContext = agmContext;
+            _tenantProvider = tenantProvider;
         }
 
         public async Task<ContentEventId> Create(ContentEvent ContentEvent, CancellationToken cancellationToken = default)
@@ -30,12 +32,20 @@ namespace AGM.EntityFramework.Repositories
 
         public async Task<IEnumerable<ContentEvent>> GetAll(CancellationToken cancellationToken = default)
         {
-            return await _AgmContext.ContentEvents.ToListAsync(cancellationToken);
+            var tenant = _tenantProvider.GetCurrentTenant();
+
+            return await _AgmContext.ContentEvents
+                 .Where(c => c.TenantId == tenant.Id).ToListAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<ContentEvent>> GetAll(DateTime From, CancellationToken cancellationToken = default)
         {
-            return await _AgmContext.ContentEvents.Where(c => c.StartsOn >= From).ToListAsync(cancellationToken);
+            var tenant = _tenantProvider.GetCurrentTenant();
+            return await _AgmContext
+                .ContentEvents
+                .Include(c => c.AlbionMap)
+                .Include(c => c.SubType)
+                .Where(c => c.TenantId == tenant.Id && c.StartsOn >= From).OrderBy(c => c.StartsOn).ToListAsync(cancellationToken);
         }
 
         public async Task<ContentEvent> GetById(ContentEventId Id, CancellationToken cancellationToken = default)

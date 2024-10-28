@@ -5,6 +5,7 @@ using AGM.DiscordBot;
 using AGM.DiscordBot.Configuration;
 using AGM.DiscordBot.Factory;
 using AGM.DiscordBot.Interactions;
+using AGM.DiscordBot.Jobs;
 using AGM.DiscordBot.Processing;
 using AGM.Domain.Abstractions;
 using AGM.Domain.Identity;
@@ -14,7 +15,9 @@ using Discord.Interactions;
 using Discord.WebSocket;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddHostedService<AGMDiscordBotWorker>();
+builder.Services
+    .AddHostedService<AGMDiscordBotWorker>()
+    .AddHostedService<RefreshTimerBoardJobService>();
 builder.Services
     .ConfigureAGMDatabase(builder.Configuration)
     .AddDatabaseServices()

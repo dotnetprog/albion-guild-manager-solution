@@ -7,7 +7,7 @@ namespace AGM.DiscordBot.Interactions.AutoCompletions
     {
         public override async Task<AutocompletionResult> GenerateSuggestionsAsync(IInteractionContext context, IAutocompleteInteraction autocompleteInteraction, IParameterInfo parameter, IServiceProvider services)
         {
-            var currentTime = DateTime.UtcNow.Date.AddHours(DateTime.Now.Hour);
+            var currentTime = DateTime.UtcNow.Date.AddHours(DateTime.UtcNow.Hour);
             //create 12 timers from the current time;
             var result = new List<DateTime>();
             result.Add(currentTime);

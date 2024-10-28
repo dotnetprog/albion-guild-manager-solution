@@ -7,10 +7,12 @@ namespace AGM.DiscordBot.Factory
     public class WorkerScopedDiscordFactory : IScopedDiscordFactory
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IServiceProvider _rootServiceProvider;
 
-        public WorkerScopedDiscordFactory(IServiceScopeFactory serviceScopeFactory)
+        public WorkerScopedDiscordFactory(IServiceScopeFactory serviceScopeFactory, IServiceProvider rootServiceProvider)
         {
             _serviceScopeFactory = serviceScopeFactory;
+            _rootServiceProvider = rootServiceProvider;
         }
 
         public async Task<IServiceScope> Create(IGuild Guild, IGuildUser User)
@@ -22,7 +24,7 @@ namespace AGM.DiscordBot.Factory
                 Name = Guild?.Name
             };
 
-            var scope = _serviceScopeFactory.CreateScope();
+            var scope = _rootServiceProvider.CreateScope(); //_serviceScopeFactory.CreateScope();
             var tenantProvider = scope.ServiceProvider.GetService<ITenantProvider>();
             tenantProvider.SetActiveTenant(tenant);
             var IdentityManager = scope.ServiceProvider.GetService<IDiscordIdentityManager>() as SocketDiscordIdentityManager;
