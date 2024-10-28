@@ -89,12 +89,12 @@ jobs:
           uses: 'azure/aci-deploy@v1'
           with:
             resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
-            dns-name-label: ${{ secrets.AZURE_RESOURCE_GROUP }}${{ github.run_number }}
+            dns-name-label: agmbot${{ github.run_number }}
             image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/agmbot:${{ github.sha }}
             registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
             registry-username: ${{ secrets.REGISTRY_USERNAME }}
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-            name: aci-dambot${{ inputs.environment }}
+            name: agmbot${{ inputs.environment }}
             location: 'east us'
         - name: Update database
           run: |
