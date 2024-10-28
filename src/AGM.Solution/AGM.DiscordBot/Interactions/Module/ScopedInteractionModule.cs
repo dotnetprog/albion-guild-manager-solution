@@ -1,4 +1,5 @@
 ﻿using AGM.DiscordBot.Factory;
+using Discord;
 using Discord.Interactions;
 
 namespace AGM.DiscordBot.Interactions.Module
@@ -10,5 +11,7 @@ namespace AGM.DiscordBot.Interactions.Module
         {
             _ScopeFactory = scopeFactory;
         }
+        protected Task<IServiceScope> CreateScope() => _ScopeFactory.Create(Context.Guild, (IGuildUser)Context.User);
+
     }
 }

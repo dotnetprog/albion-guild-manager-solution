@@ -4,6 +4,7 @@ using AGM.Application.Features.Transactional.Behaviors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace AGM.Application
 {
     public static class IServiceCollectionExtensions

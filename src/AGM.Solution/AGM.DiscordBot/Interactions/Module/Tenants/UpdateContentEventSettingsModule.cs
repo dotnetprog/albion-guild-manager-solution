@@ -5,10 +5,10 @@ using Discord.Interactions;
 
 namespace AGM.DiscordBot.Interactions.Module.Tenants
 {
-    public class UpdateContentEventSettings : ScopedInteractionModule
+    public class UpdateContentEventSettingsModule : ScopedInteractionModule
     {
 
-        public UpdateContentEventSettings(IScopedDiscordFactory scopedDiscordFactory) : base(scopedDiscordFactory)
+        public UpdateContentEventSettingsModule(IScopedDiscordFactory scopedDiscordFactory) : base(scopedDiscordFactory)
         {
 
         }
@@ -25,7 +25,7 @@ namespace AGM.DiscordBot.Interactions.Module.Tenants
                 .WithDescription("In progress...")
                 .WithColor(Color.Blue)
                 .Build(), ephemeral: true);
-            using var scope = await _ScopeFactory.Create(Context.Guild, (IGuildUser)Context.User);
+            using var scope = await CreateScope();
             var processingService = scope.ServiceProvider.GetRequiredService<IScopedDiscordProcessingService>();
             await processingService.UpdateContentEventSettingsInteraction(TimerChannel);
             await FollowupAsync(embed:
