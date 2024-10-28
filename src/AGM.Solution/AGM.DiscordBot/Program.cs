@@ -1,4 +1,5 @@
 using AGM.Application;
+using AGM.Application.Features.Caching;
 using AGM.Database;
 using AGM.DiscordBot;
 using AGM.DiscordBot.Configuration;
@@ -19,6 +20,7 @@ builder.Services
     .AddDatabaseServices()
     .ConfigureAGMApplicationLayer()
     .Configure<DiscordSettings>(builder.Configuration.GetSection("Discord"))
+    .Configure<CacheSettings>(builder.Configuration.GetSection("CacheSettings"))
     .AddSingleton<DiscordSocketClient>((sp) =>
     {
         var config = new DiscordSocketConfig()

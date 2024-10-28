@@ -1,4 +1,6 @@
-﻿namespace AGM.Domain.Entities
+﻿using Newtonsoft.Json;
+
+namespace AGM.Domain.Entities
 {
     [StronglyTypedId()]
     public partial struct ContentEventSubTypeId
@@ -11,6 +13,7 @@
         public string? Emoji { get; set; }
 
         public ContentEventTypeId? ContentEventTypeId { get; set; }
+        [JsonIgnore]
         public ContentEventType? ContentEventType { get; set; }
 
     }
