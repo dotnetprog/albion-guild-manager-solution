@@ -16,7 +16,7 @@ public class RefreshTimerBoardJobService : CronJobService
     private readonly IScopedDiscordFactory _scopedFactory;
     private readonly ILogger _logger;
     private readonly DiscordSocketClient _discordSocketClient;
-    public RefreshTimerBoardJobService(ILogger<RefreshTimerBoardJobService> logger, IScopedDiscordFactory scopedFactory, DiscordSocketClient discordSocketClient) : base(CronExpressionConsts.Every5Minute, TimeZoneInfo.Local, logger)
+    public RefreshTimerBoardJobService(ILogger<RefreshTimerBoardJobService> logger, IScopedDiscordFactory scopedFactory, DiscordSocketClient discordSocketClient) : base(CronExpressionConsts.EveryMinute, TimeZoneInfo.Local, logger)
     {
         _scopedFactory = scopedFactory;
         _logger = logger;
@@ -44,7 +44,7 @@ public class RefreshTimerBoardJobService : CronJobService
 
 
 
-        var currentTime = DateTime.UtcNow.Date.AddHours(DateTime.UtcNow.Hour);
+        var currentTime = DateTime.UtcNow.Date.AddHours(DateTime.UtcNow.Hour).AddMinutes(-5);
         foreach (var tenant in tenants)
         {
             if (!tenant.ChannelEventDiscordId.HasValue)
