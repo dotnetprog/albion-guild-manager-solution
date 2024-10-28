@@ -8,9 +8,9 @@ using MediatR;
 
 namespace AGM.DiscordBot.Interactions.AutoCompletions
 {
-    public class GatherSubTypeAutoCompleteHandler : ScopedAutoCompleteHandler
+    public class ContentEventTypesButGatheringAutoCompleteHandler : ScopedAutoCompleteHandler
     {
-        public GatherSubTypeAutoCompleteHandler(IScopedDiscordFactory scopeFactory) : base(scopeFactory)
+        public ContentEventTypesButGatheringAutoCompleteHandler(IScopedDiscordFactory scopeFactory) : base(scopeFactory)
         {
         }
 
@@ -19,21 +19,12 @@ namespace AGM.DiscordBot.Interactions.AutoCompletions
             var userInput = ((context.Interaction as SocketAutocompleteInteraction)?.Data?.Current?.Value?.ToString() ?? string.Empty).ToLowerInvariant();
             var sender = ScopedService.GetRequiredService<ISender>();
             var EventTypes = await sender.Send(new RetrieveAllContentEventTypesQuery());
-            var gatheringType = EventTypes.FirstOrDefault(t => t.Name == ContentEventTypeConsts.Gathering);
 
-            var GatheringSubTypes = await sender.Send(new RetrieveContentEventSubTypesByTypeQuery { TypeId = gatheringType.Id });
-
-
-            var results = GatheringSubTypes
-                .Where(s => s.Name.ToLower().Contains(userInput))
+            var result = EventTypes
+                .Where(t => t.Name != ContentEventTypeConsts.Gathering && t.Name.ToLower().Contains(userInput))
                 .Take(25)
-                .Select(s => new AutocompleteResult(s.Name, s.Id.ToString()))
-                .ToArray();
-
-
-            return AutocompletionResult.FromSuccess(results);
-
-
+                .Select(r => new AutocompleteResult(r.Name, r.Id.ToString()));
+            return AutocompletionResult.FromSuccess(result.ToArray());
         }
     }
 }
