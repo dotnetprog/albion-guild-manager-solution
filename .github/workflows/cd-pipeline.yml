@@ -71,8 +71,8 @@ jobs:
             database_username: ${{ secrets.DATABASE_USER  }}
             database_name: ${{ secrets.DATABASE_NAME }}
             DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-            DAM_DISCORD_CLIENTID: ${{ secrets.DISCORD_CLIENTID }}
-            DAM_DISCORD_BOTTOKEN: ${{ secrets.DISCORD_BOTTOKEN }}
+            DISCORD_CLIENTID: ${{ secrets.DISCORD_CLIENTID }}
+            DISCORD_BOTTOKEN: ${{ secrets.DISCORD_BOTTOKEN }}
 
         - name: 'Connect to Azure container registry'
           uses: azure/docker-login@v1
