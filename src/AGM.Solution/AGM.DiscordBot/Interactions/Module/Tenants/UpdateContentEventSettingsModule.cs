@@ -8,7 +8,7 @@ namespace AGM.DiscordBot.Interactions.Module.Tenants
     public class UpdateContentEventSettingsModule : ScopedInteractionModule
     {
 
-        public UpdateContentEventSettingsModule(IScopedDiscordFactory scopedDiscordFactory) : base(scopedDiscordFactory)
+        public UpdateContentEventSettingsModule(IScopedDiscordFactory scopedDiscordFactory) : base(scopedDiscordFactory, "ContentEvent Settings")
         {
 
         }

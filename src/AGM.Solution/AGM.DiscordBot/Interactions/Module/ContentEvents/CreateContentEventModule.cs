@@ -7,13 +7,12 @@ using AGM.Domain.Entities;
 using Discord;
 using Discord.Interactions;
 using MediatR;
-using System.Text.RegularExpressions;
 
 namespace AGM.DiscordBot.Interactions.Module.ContentEvents
 {
     public class CreateContentEventModule : ScopedInteractionModule
     {
-        public CreateContentEventModule(IScopedDiscordFactory scopeFactory) : base(scopeFactory)
+        public CreateContentEventModule(IScopedDiscordFactory scopeFactory) : base(scopeFactory, "Timer")
         {
         }
 
@@ -120,51 +119,6 @@ namespace AGM.DiscordBot.Interactions.Module.ContentEvents
             var Content = await sender.Send(request);
             await ShowSuccess($"Content Timer Added, Id={Content.Id}");
         }
-        private async Task ShowInProgress()
-        {
-            var embed = new EmbedBuilder()
-                .WithTitle("timer notification")
-                .WithDescription("In progress...")
-                .WithColor(Color.Blue)
-                .Build();
-
-            await RespondAsync(embed: embed, ephemeral: true);
-
-        }
-        private DateTime GetTimeFromWhen(string input)
-        {
-            if (input.ToLower() == "now")
-            {
-                return DateTime.UtcNow;
-            }
-            var regexResult = Regex.Matches(input, @"\d+");
-            var hour = int.Parse(regexResult[0].Value);
-            var min = int.Parse(regexResult[1].Value);
-            return DateTime.UtcNow.AddHours(hour).AddMinutes(min);
-        }
-        private bool ValidateWhen(string input)
-        {
-            if (input.ToLower() == "now")
-            {
-                return true;
-            }
-            var regexResult = Regex.Matches(input, @"\d+");
-            return regexResult.Count == 2;
-        }
-        private bool ValidateIsGuid(string input)
-        {
-            return Guid.TryParse(input, out Guid SubTypeId);
-        }
-
-        private async Task ShowValidation(string message)
-        {
-
-            var embed = new EmbedBuilder().WithTitle("Command Validation").WithDescription(message).WithColor(Color.Red).Build();
-            await FollowupAsync(embed: embed, ephemeral: true);
-
-        }
-
-
 
     }
 
