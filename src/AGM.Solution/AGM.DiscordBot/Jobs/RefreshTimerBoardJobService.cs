@@ -80,7 +80,7 @@ public class RefreshTimerBoardJobService : CronJobService
                     if (existingMessage != null)
                     {
                         await channel.ModifyMessageAsync(existingMessage.Id, (m) => m.Embed = embed);
-                        return;
+                        continue;
                     }
 
 
