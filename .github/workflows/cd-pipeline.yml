@@ -51,10 +51,10 @@ jobs:
           uses: actions/setup-dotnet@v3
           with:
             dotnet-version: 8.0.x
-        # - name: 'Login via Azure CLI'
-        #   uses: azure/login@v1
-        #   with:
-        #     creds: ${{ secrets.AZURE_SERVICE_CREDENTIALS }}
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_SERVICE_CREDENTIALS }}
         - name: Restore dependencies
           run: dotnet restore ${{ github.workspace }}/${{  inputs.solutionPath  }}
         - name: Build
@@ -74,29 +74,28 @@ jobs:
             DISCORD_CLIENTID: ${{ secrets.DISCORD_CLIENTID }}
             DISCORD_BOTTOKEN: ${{ secrets.DISCORD_BOTTOKEN }}
 
-        # - name: 'Connect to Azure container registry'
-        #   uses: azure/docker-login@v1
-        #   with:
-        #     login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-        #     username: ${{ secrets.REGISTRY_USERNAME }}
-        #     password: ${{ secrets.REGISTRY_PASSWORD }}
-        # - name: 'Build and Push Image' 
-        #   run: |
-        #     cd ${{ github.workspace }}/${{ inputs.solutionFolder }}
-        #     docker build -f 'AGM.DiscordBot/Dockerfile' -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/agmbot:${{ github.sha }} .
-        #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/agmbot:${{ github.sha }}
-        # - name: 'Deploy to Azure Container Instances'
-        #   uses: 'azure/aci-deploy@v1'
-        #   with:
-        #     resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
-        #     dns-name-label: agmbot${{ github.run_number }}
-        #     image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/agmbot:${{ github.sha }}
-        #     registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-        #     registry-username: ${{ secrets.REGISTRY_USERNAME }}
-        #     registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-        #     name: agmbot-production
-        #     location: 'east us'
-                   # cd ${{ github.workspace }}/${{ inputs.solutionFolder }}/AGM.Database.Console/bin/Release/net8.0
+        - name: 'Connect to Azure container registry'
+          uses: azure/docker-login@v1
+          with:
+            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            username: ${{ secrets.REGISTRY_USERNAME }}
+            password: ${{ secrets.REGISTRY_PASSWORD }}
+        - name: 'Build and Push Image' 
+          run: |
+            cd ${{ github.workspace }}/${{ inputs.solutionFolder }}
+            docker build -f 'AGM.DiscordBot/Dockerfile' -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/agmbot:${{ github.sha }} .
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/agmbot:${{ github.sha }}
+        - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
+            dns-name-label: agmbot${{ github.run_number }}
+            image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/agmbot:${{ github.sha }}
+            registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            registry-username: ${{ secrets.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+            name: agmbot-production
+            location: 'east us'
         - name: Update database
           run: |
             cd ${{ github.workspace }}/${{ inputs.solutionFolder }}/AGM.Database
