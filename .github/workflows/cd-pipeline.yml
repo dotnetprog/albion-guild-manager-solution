@@ -101,8 +101,11 @@ jobs:
             cd ${{ github.workspace }}/${{ inputs.solutionFolder }}/AGM.Database
             dotnet tool install --global dotnet-ef --version 8.0.*
             dotnet ef database update --no-build --configuration Release -- --environment Production
+            cd ${{ github.workspace }}/${{ inputs.solutionFolder }}/AGM.Database.Console
+            dotnet run -- seed
           env:
             DOTNET_ENVIRONMENT: Production
+       
 
   
     
