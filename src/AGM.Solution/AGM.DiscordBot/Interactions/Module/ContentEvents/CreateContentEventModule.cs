@@ -57,16 +57,25 @@ namespace AGM.DiscordBot.Interactions.Module.ContentEvents
                 await ShowValidation("resource was not found under the gathering type. Please contact your admin");
                 return;
             }
-
-            var request = new AddContentEventCommand
+            try
             {
-                AlbionMapId = MapId,
-                StartsOn = event_time_utc,
-                SubTypeId = SubTypeId,
-                TypeId = GatheringType.Id
-            };
-            var Content = await sender.Send(request);
-            await ShowSuccess($"Content Timer Added, Id={Content.Id}");
+                var request = new AddContentEventCommand
+                {
+                    AlbionMapId = MapId,
+                    StartsOn = event_time_utc,
+                    SubTypeId = SubTypeId,
+                    TypeId = GatheringType.Id
+                };
+                var Content = await sender.Send(request);
+                await ShowSuccess($"Content Timer Added, Id={Content.Id}");
+            }
+            catch (Exception ex)
+            {
+                await ShowValidation(ex.Message);
+                return;
+            }
+
+
         }
         private async Task ShowSuccess(string Message)
         {

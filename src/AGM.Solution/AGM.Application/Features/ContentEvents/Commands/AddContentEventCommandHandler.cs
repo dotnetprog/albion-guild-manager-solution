@@ -24,6 +24,13 @@ namespace AGM.Application.Features.ContentEvents.Commands
         {
             var currentUser = await _discordIdentityManager.GetCurrentUser();
             var tenant = _tenantProvider.GetCurrentTenant();
+
+            var existingContentEvents = await _contentEventRepository.GetAll(request.StartsOn.AddHours(-1), cancellationToken);
+            if (existingContentEvents.Any(t => t.SubTypeId == request.SubTypeId && t.AlbionMapId == request.AlbionMapId))
+            {
+                throw new InvalidOperationException("Another similar was found in the database. The event you try to register seems to be a duplicate.");
+            }
+
             var contentEvent = new ContentEvent
             {
                 AlbionMapId = request.AlbionMapId,

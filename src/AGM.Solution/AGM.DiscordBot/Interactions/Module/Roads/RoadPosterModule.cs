@@ -35,7 +35,9 @@ namespace AGM.DiscordBot.Interactions.Module.Roads
             var scope = await this.CreateScope();
             var sender = scope.ServiceProvider.GetRequiredService<ISender>();
             var dbMaps = await sender.Send(new RetrieveAlbionAllMapsQuery());
-            var roadBuilder = new RoadBuilder().WithExpiresAt(expiresAt);
+            var roadBuilder = new RoadBuilder();
+            DateTimeOffset timestamp = DateTime.SpecifyKind(expiresAt, DateTimeKind.Utc);
+            var timeTag = TimestampTag.FormatFromDateTimeOffset(timestamp, TimestampTagStyles.Relative);
             foreach (var mapid in mapsResult.Value)
             {
                 var map = dbMaps.FirstOrDefault(x => x.Id == mapid);
@@ -48,8 +50,13 @@ namespace AGM.DiscordBot.Interactions.Module.Roads
                 roadBuilder.AddMap(map);
             }
             var SocketGuildUser = (IGuildUser)Context.User;
+
+            var button = new ButtonBuilder().WithLabel("Delete").WithCustomId("delete_road").WithStyle(ButtonStyle.Danger);
+            var components = new ComponentBuilder().WithButton(button).Build();
             var embed = new EmbedBuilder()
                 .WithTitle("Road")
+                .AddField("Expires In", timeTag)
+                .AddField("AuthorId", Context.User.Id)
                 .WithDescription(roadBuilder.BuildString())
                 .WithColor(Color.Green)
                 .WithCurrentTimestamp()
@@ -58,11 +65,35 @@ namespace AGM.DiscordBot.Interactions.Module.Roads
                 .WithName(SocketGuildUser.DisplayName)
                 .WithIconUrl(SocketGuildUser.GetDisplayAvatarUrl()))
                 .Build();
-            await ReplyAsync(text: "### Road created!", embed: embed);
+            await ReplyAsync(text: "### Road created!", embed: embed, components: components);
 
 
         }
+        [ComponentInteraction("delete_road")]
+        public async Task DeleteRoad()
+        {
+            var guildUser = Context.User as IGuildUser;
+            var channel = (ITextChannel)Context.Channel;
+            var channelPermission = guildUser.GetPermissions(channel);
+            var interaction = (IComponentInteraction)Context.Interaction;
+            var messageEmbed = interaction.Message.Embeds.FirstOrDefault();
+            var originalAuthorId = messageEmbed.Fields.FirstOrDefault(f => f.Name == "AuthorId").Value;
+            var originalAuthorName = messageEmbed.Author.Value.Name;
+            if (!channelPermission.ManageMessages
+                && !guildUser.GuildPermissions.ManageMessages
+                && originalAuthorId != guildUser.Id.ToString())
+            {
+                var embed = new EmbedBuilder()
+                    .WithTitle($"{CommandTitle} Validation")
+                    .WithDescription($"Only users that can manage messages or the Author ({originalAuthorName}) can delete a road.")
+                    .WithColor(Color.Red)
+                    .Build();
+                await RespondAsync(embed: embed, ephemeral: true);
+                return;
+            }
+            await interaction.Message.DeleteAsync();
 
+        }
 
     }
 }
