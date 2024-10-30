@@ -8,7 +8,7 @@ namespace AGM.DiscordBot.Interactions.Module
     public abstract class ScopedInteractionModule : InteractionModuleBase<SocketInteractionContext>
     {
         protected readonly IScopedDiscordFactory _ScopeFactory;
-        private string CommandTitle { get; set; }
+        protected string CommandTitle { get; set; }
         protected ScopedInteractionModule(IScopedDiscordFactory scopeFactory, string commandTitle)
         {
             _ScopeFactory = scopeFactory;

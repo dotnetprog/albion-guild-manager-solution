@@ -1,6 +1,5 @@
 ﻿using AGM.Domain.Entities;
 using AGM.Domain.Enums;
-using Discord;
 
 namespace AGM.DiscordBot.Interactions.Module.Roads
 {
@@ -32,12 +31,8 @@ namespace AGM.DiscordBot.Interactions.Module.Roads
 
         public string BuildString()
         {
-            DateTimeOffset timestamp = DateTime.SpecifyKind(ExpiresAt, DateTimeKind.Utc);
-            var timeTag = TimestampTag.FormatFromDateTimeOffset(timestamp, TimestampTagStyles.Relative);
             var roadStrings = Maps.Select(m => $"{Icons[m.Type.Value]} {m.Name}").ToList();
-            var roadFormatted = string.Join(Separator, roadStrings);
-            return $"Expires In: {timeTag} | {roadFormatted}";
-
+            return string.Join(Separator, roadStrings);
         }
 
 
